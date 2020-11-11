@@ -1,0 +1,27 @@
+.card-wrapper {
+    display: relative;
+    padding:10px;
+    width: 90%;
+}
+
+.text-response {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.left-arrow {
+    cursor: pointer;   
+    float: left;
+}
+
+.right-arrow {
+    cursor: pointer;
+    float: right;
+}
+
+direction-wrapper {
+}
+
+.grey {
+    color: grey;
+}
