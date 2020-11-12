@@ -1,4 +1,20 @@
 .home-wrapper {
+    display: flex;
     width: 100%;
     height: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.card-border {
+    padding: 1rem;
+    margin: .5rem;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.refresh-button {
+    float: right;
+    font-size: 15px;
+    cursor: pointer;
 }

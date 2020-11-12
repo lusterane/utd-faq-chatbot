@@ -1,5 +1,7 @@
 .card-wrapper {
-    display: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     padding:10px;
     width: 90%;
 }
@@ -9,9 +11,14 @@
     padding-bottom:10px;
 }
 
+.show-answer-button {
+    font-size: 12px !important;
+    margin: 5px !important;
+}
+
 .left-arrow {
     cursor: pointer;   
-    float: left;
+    margin-left: 0;
 }
 
 .right-arrow {
@@ -19,9 +26,15 @@
     float: right;
 }
 
-direction-wrapper {
+.direction-wrapper {
+    display : flex;
+    justify-content: space-between;
 }
 
 .grey {
     color: grey;
+}
+
+.inquiry-next-question {
+    padding-top: 3rem;
 }

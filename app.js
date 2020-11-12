@@ -11,8 +11,11 @@ app.use(bodyParser.json());
 
 // import routes
 const questionRoute = require('./api/routes/question');
+const recentlyAskedRoute = require('./api/routes/recentlyAsked');
 
 app.use('/question', questionRoute);
+app.use('/recentlyAsked', recentlyAskedRoute);
+
 
 // ROUTES
 app.get('/', (req, res) => {

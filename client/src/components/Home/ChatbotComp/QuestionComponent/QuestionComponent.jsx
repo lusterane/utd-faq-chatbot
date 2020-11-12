@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Loading } from 'react-simple-chatbot';
+import { Spinner } from 'react-bootstrap';
 import ShowQueryCard from '../../ShowQueryCard/ShowQueryCard';
 
 import './QuestionComponent.css';
@@ -7,15 +7,20 @@ import './QuestionComponent.css';
 class QuestionComponent extends Component {
 	state = { questions: [], isLoaded: false };
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	const { question } = this.props.steps;
-	// 	if (prevProps.question !== question) {
-	// 		this.setState({ propsLoaded: true }, this.getIntentsFromDB());
-	// 	}
-	// }
-
 	componentDidMount() {
 		this.getIntentsFromDB();
+		this.updateUserModel();
+	}
+
+	updateUserModel = () => {
+		const { name, type, question } = this.props.steps;
+		this.props.handleName(name.message)
+		this.props.handleUserType(type.message)
+	}
+
+	handleAnsweredQuestion = (faqQuestion, faqAnswer) => {
+		const { question } = this.props.steps;
+		this.props.handleQuestionsAnswered(question, faqQuestion, faqAnswer);
 	}
 
 	async getIntentsFromDB() {
@@ -55,10 +60,12 @@ class QuestionComponent extends Component {
 			<Fragment>
 				{isLoaded ? (
 					<div className="dark normal-font-size">
-						<ShowQueryCard questions={questions} />
+						<ShowQueryCard questions={questions} handleAnsweredQuestion={this.handleAnsweredQuestion} />
 					</div>
 				) : (
-					<Loading className="dark" />
+					<Spinner animation="border" variant="dark" role="status">
+  						<span className="sr-only">Loading...</span>
+					</Spinner>
 				)}
 			</Fragment>
 		);

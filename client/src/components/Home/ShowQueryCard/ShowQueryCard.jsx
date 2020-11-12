@@ -16,7 +16,8 @@ class ShowQueryCard extends Component {
 		currentQuestion: '',
 		currentAnswer: '',
 		index: 0,
-		showAnswer: '',
+		showAnswer: false,
+		answeredQuestion: false,
 	};
 
 	componentDidMount() {
@@ -26,6 +27,13 @@ class ShowQueryCard extends Component {
 	toggleShowAnswer = () => {
 		this.setState({ showAnswer: !this.state.showAnswer });
 	};
+
+	handleAnsweredQuestion = () => {
+		const {currentQuestion, currentAnswer} = this.state;
+		this.props.handleAnsweredQuestion(currentQuestion, currentAnswer);
+		this.setState({ showAnswer: false, answeredQuestion: true })
+	}
+
 	handleIndexIncrement = () => {
 		const { index } = this.state;
 
@@ -52,14 +60,16 @@ class ShowQueryCard extends Component {
 			currentCosinSim: response[index][0],
 			currentQuestion: response[index][1],
 			currentAnswer: response[index][2],
+			showAnswer: false,
 		});
 	};
 
 	render() {
-		const { currentAnswer, currentCosinSim, currentQuestion, index, showAnswer } = this.state;
+		const { currentAnswer, currentCosinSim, currentQuestion, index, showAnswer, answeredQuestion } = this.state;
 		const { response } = this.props.questions;
 		return (
 			<Fragment>
+				{ answeredQuestion ? <div>I'm happy to have assisted you!</div>: (
 				<div className="card-wrapper">
 					<div className="direction-wrapper">
 						<FontAwesomeIcon
@@ -88,8 +98,16 @@ class ShowQueryCard extends Component {
 					) : (
 						''
 					)}
+
+				<Button variant="outline-dark show-answer-button" onClick={this.toggleShowAnswer}>
+					Answer
+				</Button>
+				<div>
+				{showAnswer ? (<Button variant="outline-success show-answer-button" onClick={this.handleAnsweredQuestion}>
+					This Answers My Question
+				</Button>): ''}
 				</div>
-				<Button variant="outline-dark">Dark</Button>
+				</div>)}
 			</Fragment>
 		);
 	}

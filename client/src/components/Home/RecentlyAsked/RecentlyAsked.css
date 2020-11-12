@@ -1,0 +1,12 @@
+.recently-asked-wrapper {
+    display: block;
+    font-size: 10px !important;
+}
+
+.normal-text-size {
+    font-size: 10px !important;
+    margin: 1rem;
+}
+
+.show-recent-wrapper {
+}
