@@ -14,13 +14,47 @@ class QuestionComponent extends Component {
 
 	updateUserModel = () => {
 		const { name, type, question } = this.props.steps;
-		this.props.handleName(name.message)
-		this.props.handleUserType(type.message)
-	}
+		this.props.handleName(name.message);
+		this.props.handleUserType(type.message);
+	};
 
 	handleAnsweredQuestion = (faqQuestion, faqAnswer) => {
-		const { question } = this.props.steps;
-		this.props.handleQuestionsAnswered(question, faqQuestion, faqAnswer);
+		const { name, type, question } = this.props.steps;
+		this.props.handleQuestionsAnswered(question.message, faqQuestion, faqAnswer);
+		this.postRecentlyAsked(
+			name.message,
+			type.message,
+			question.message,
+			faqQuestion,
+			faqAnswer
+		);
+	};
+
+	async postRecentlyAsked(name, type, question, faqQuestion, faqAnswer) {
+		console.log('HTTP CALL: postRecentlyAsked');
+		const endpoint = 'http://localhost:5000';
+
+		const responseDelete = await fetch(endpoint + `/recentlyAsked/` + type, {
+			method: 'DELETE',
+		}).then((res) => res.json({ message: 'Recieved' }));
+
+		const body = {
+			user: name,
+			userType: type,
+			questionData: {
+				userQuestion: question,
+				faqQuestion: faqQuestion,
+				faqAnswer: faqAnswer,
+			},
+		};
+		const responsePost = await fetch(endpoint + `/recentlyAsked/`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(body),
+		}).then((res) => res.json({ message: 'Recieved' }));
 	}
 
 	async getIntentsFromDB() {
@@ -60,11 +94,15 @@ class QuestionComponent extends Component {
 			<Fragment>
 				{isLoaded ? (
 					<div className="dark normal-font-size">
-						<ShowQueryCard questions={questions} handleAnsweredQuestion={this.handleAnsweredQuestion} />
+						<ShowQueryCard
+							questions={questions}
+							handleAnsweredQuestion={this.handleAnsweredQuestion}
+							userType={this.props.steps.type.message}
+						/>
 					</div>
 				) : (
 					<Spinner animation="border" variant="dark" role="status">
-  						<span className="sr-only">Loading...</span>
+						<span className="sr-only">Loading...</span>
 					</Spinner>
 				)}
 			</Fragment>

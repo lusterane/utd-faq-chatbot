@@ -9,10 +9,10 @@ import './RecentlyAsked.css';
 
 class RecentlyAsked extends Component {
 	state = {
-		student: {},
-		faculty: {},
 		showStudent: false,
 		showFaculty: false,
+		showRefresh: false,
+		refreshTime: ''
 	};
 
 	componentDidMount() {
@@ -31,6 +31,7 @@ class RecentlyAsked extends Component {
 	refreshComponent = () => {
 		this.getRecentlyAsked('faculty');
 		this.getRecentlyAsked('student');
+		this.setState({showRefresh: true, refreshTime: new Date()})
 	};
 
 	async getRecentlyAsked(userType) {
@@ -40,24 +41,27 @@ class RecentlyAsked extends Component {
 			.then((res) => res.json({ message: 'Recieved' }))
 			.then(
 				(result) => {
-					const { questionData, user, userType, date } = result[0];
-					userType === 'FACULTY'
-						? this.setState({
-								faculty: {
-									user: user,
-									userType: userType,
-									date: date,
-									questionData: questionData,
-								},
-						  })
-						: this.setState({
-								student: {
-									user: user,
-									userType: userType,
-									date: date,
-									questionData: questionData,
-								},
-						  });
+					if (result.length !== 0)  {
+							const { questionData, user, userType, date } = result[0];
+							userType === 'FACULTY'
+								? this.setState({
+										faculty: {
+											user: user,
+											userType: userType,
+											date: date,
+											questionData: questionData,
+										},
+								  })
+								: this.setState({
+										student: {
+											user: user,
+											userType: userType,
+											date: date,
+											questionData: questionData,
+										},
+								  });
+					
+					}
 				},
 				// Note: it's important to handle errors here
 				// instead of a catch() block so that we don't swallow
@@ -78,7 +82,7 @@ class RecentlyAsked extends Component {
 	}
 
 	render() {
-		const { showStudent, showFaculty, student, faculty } = this.state;
+		const { showStudent, showFaculty, student, faculty, showRefresh, refreshTime } = this.state;
 
 		return (
 			<Fragment>
@@ -92,7 +96,7 @@ class RecentlyAsked extends Component {
 					<div>
 						<b>Recently asked by student:</b>{' '}
 					</div>
-					{showStudent ? (
+					{showStudent && student? (
 						<div className="show-recent-wrapper">
 							<div>Name: {student.user}</div>
 							<div>Date: {student.date}</div>
@@ -114,7 +118,7 @@ class RecentlyAsked extends Component {
 						<b>Recently asked by faculty: </b>
 					</div>
 
-					{showFaculty ? (
+					{showFaculty && faculty ? (
 						<div className="show-recent-wrapper">
 							<div>Name: {faculty.user}</div>
 							<div>Date: {faculty.date}</div>
@@ -132,6 +136,7 @@ class RecentlyAsked extends Component {
 					>
 						SHOW
 					</Button>
+					{showRefresh ? <div className="refresh-message">Refreshed {refreshTime.toString()}</div> : ''}
 				</div>
 			</Fragment>
 		);
