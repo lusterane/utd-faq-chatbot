@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import ChatbotComp from './ChatbotComp/ChatbotComp';
 import ShowQueryCard from './ShowQueryCard/ShowQueryCard';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Alert } from 'react-bootstrap';
 
 import './Home.css';
 import UserModel from './UserModel/UserModel';
@@ -37,20 +37,25 @@ class Home extends Component {
 		const {name, userType, questionData} = this.state;
 		return (
 			<Fragment>
+				<Alert variant="success">
+					I'm on free-tier hosting. The page may load slowly or crash!
+					<br></br>
+					<br></br>
+					Please wait at least <b>15s</b> for stuff to load or refresh. Thank you!!
+				
+				
+				</Alert>
 				<div className="home-wrapper">
 					<ChatbotComp
-						updateQuestions={this.updateQuestions} 
-						handleName={this.handleName} 
-						handleUserType={this.handleUserType} 
-						handleQuestionsAnswered={this.handleQuestionsAnswered}/>
-					<div>
-					<RecentlyAsked />
-					<UserModel
-						name={name}
-						userType={userType}
-						questionData={questionData}
+						updateQuestions={this.updateQuestions}
+						handleName={this.handleName}
+						handleUserType={this.handleUserType}
+						handleQuestionsAnswered={this.handleQuestionsAnswered}
 					/>
-					<CurrentScrapedSites/>
+					<div>
+						<RecentlyAsked />
+						<UserModel name={name} userType={userType} questionData={questionData} />
+						<CurrentScrapedSites />
 					</div>
 				</div>
 			</Fragment>

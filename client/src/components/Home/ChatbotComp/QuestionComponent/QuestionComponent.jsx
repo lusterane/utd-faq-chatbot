@@ -32,7 +32,7 @@ class QuestionComponent extends Component {
 
 	async postRecentlyAsked(name, type, question, faqQuestion, faqAnswer) {
 		console.log('HTTP CALL: postRecentlyAsked');
-		const endpoint = 'http://localhost:5000';
+		const endpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:5000';
 
 		const responseDelete = await fetch(endpoint + `/recentlyAsked/` + type, {
 			method: 'DELETE',
